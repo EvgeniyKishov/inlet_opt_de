@@ -1,0 +1,13 @@
+k = 1
+i = 1
+exit_flag = 1
+*dowhile,exit_flag
+	*if,i,lt,ext_nodes_num,then
+		inlet_nodes(k) = ext_nodes(i)
+		k = min(k + 1, inlet_nodes_num)
+		inc = nint(ext_nodes_num/inlet_nodes_num)
+		i = max(1, min(i + inc, ext_nodes_num))
+	*else
+		exit_flag = -1
+	*endif
+*enddo

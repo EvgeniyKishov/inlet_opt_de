@@ -1,0 +1,29 @@
+﻿!
+! Запись координат узлов в файл
+!
+allsel,all,all
+
+*vget,all_nodes,node,,nlist
+*get,all_nodes_num,parm,all_nodes,dim,1
+
+*cfopen,all_nodes,txt
+*do,i,1,all_nodes_num
+	id = all_nodes(i)
+	x = nx(all_nodes(i))
+	y = ny(all_nodes(i))
+	z = nz(all_nodes(i))
+	*vwrite,id,x,y,z
+        (F12.4,F12.4,F12.4,F12.4)
+*enddo
+*cfclos
+
+!запись общего количества узлов 
+*cfopen,all_nodes_num,txt
+*vwrite,all_nodes_num
+(F12.4)
+*cfclos
+
+*del,x
+*del,y
+*del,z
+

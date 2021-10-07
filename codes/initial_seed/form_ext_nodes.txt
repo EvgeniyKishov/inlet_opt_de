@@ -1,0 +1,38 @@
+!считывание количества узлов впрыска, выбранных на твёрдой сетке
+*dim,sel_nodes_num,array,1
+*vread,sel_nodes_num(1),selected_nodes_num,txt
+(F12.4)
+
+!считывание координат выбранных узлов 
+!4 столбца: (номер узла, x, y, z) записываются в одномерный массив
+*dim,selected_nodes,array,sel_nodes_num(1)*4
+*vread,selected_nodes(1),selected_nodes,txt
+(4F12.4)
+
+!формирование массива узлов на внешней поверхности,
+!построенного на основе выбранных узлов 
+ext_nodes_num = sel_nodes_num(1)
+*dim,ext_nodes,array,ext_nodes_num
+!выбор узлов на внешней поверхности 
+nsel,s,ext
+*do,i,1,ext_nodes_num
+	nx_loc = selected_nodes(4*(i-1)+2)
+	ny_loc = selected_nodes(4*(i-1)+3)
+	nz_loc = selected_nodes(4*(i-1)+4)
+	ext_nodes(i) = node(nx_loc, ny_loc, nz_loc)
+*enddo
+
+!создание компонента с поверхностными узлами
+nsel,s,node,,ext_nodes(1)
+*do,i,1,ext_nodes_num
+	nsel,a,node,,ext_nodes(i)
+*enddo
+cm,ext_nodes,node
+cmsel,s,ext_nodes
+
+!переформирование массива ext_nodes ввиду того, что
+!в исходном могут быть повторяющиеся номера узлов
+*del,ext_nodes,,nopr
+*del,ext_nodes_num
+*vget,ext_nodes,node,,nlist
+*get,ext_nodes_num,parm,ext_nodes,dim,1

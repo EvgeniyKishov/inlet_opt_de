@@ -1,0 +1,35 @@
+!открытие проекта с прочностным расчётом
+resume,static_structural,db
+!получение напряжений
+/input,codes\\map\\get_stress.txt
+
+!очистка проекта
+/clear
+
+!открытие бинарного файла проекта с жидкой сеткой
+resume,inlet_opt,db
+
+!считывание номеров узлов и напряжений во временный одномерный массив
+*dim,v,array,all_nodes_num*2
+*vread,v(1),seqv,txt
+(2F12.4)
+
+!формирование массива с напряжениями
+*dim,s_eqv,array,all_nodes_num
+*do,i,1,all_nodes_num
+	s_eqv(i) = v(2*i)
+*enddo
+
+!удаление временного массива
+*del,v,,nopr
+
+!формирование массива, отображающего множество абсолютных номеров узлов 
+!... на их порядковые номера в общем списке (т.е. в массиве all_nodes)
+*vscfun,map_ids_size,max,all_nodes
+*dim,map_ids,array,map_ids_size
+*do,i,1,all_nodes_num
+	map_ids(all_nodes(i)) = i
+*enddo
+
+!выход с сохранением проекта
+/exit,all

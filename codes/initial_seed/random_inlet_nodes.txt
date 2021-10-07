@@ -1,0 +1,4 @@
+*do,i,1,inlet_nodes_num
+	j = nint(rand(1, ext_nodes_num))
+	inlet_nodes(i) = ext_nodes(j)
+*enddo

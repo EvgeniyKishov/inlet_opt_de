@@ -1,0 +1,22 @@
+cmsel,s,selected_nodes
+
+*vget,sel_nodes,node,,nlist
+*get,sel_nodes_num,parm,sel_nodes,dim,1
+
+*cfopen,selected_nodes_num,txt
+*vwrite,sel_nodes_num
+(F12.4)
+*cfclos
+
+*cfopen,selected_nodes,txt
+*do,i,1,sel_nodes_num
+	id = sel_nodes(i)
+	nx_loc = nx(id)
+	ny_loc = ny(id)
+	nz_loc = nz(id)
+	*vwrite,id,nx_loc,ny_loc,nz_loc
+        (F12.4,F12.4,F12.4,F12.4)
+*enddo
+*cfclos
+
+allsel,all,all

@@ -1,0 +1,2890 @@
+
+ ANSYS Mechanical Enterprise                       
+
+
+ *------------------------------------------------------------------*
+ |                                                                  |
+ |   W E L C O M E   T O   T H E   A N S Y S (R)  P R O G R A M     |
+ |                                                                  |
+ *------------------------------------------------------------------*
+
+
+
+
+ ***************************************************************
+ *            ANSYS Release 18.2     LEGAL NOTICES             *
+ ***************************************************************
+ *                                                             *
+ * Copyright 2017 SAS IP, Inc.  All rights reserved.           *
+ * Unauthorized use, distribution or duplication is            *
+ * prohibited.                                                 *
+ *                                                             *
+ * Ansys is a registered trademark of ANSYS, Inc. or its       *
+ * subsidiaries in the United States or other countries.       *
+ * See the ANSYS, Inc. online documentation or the ANSYS, Inc. *
+ * documentation CD or online help for the complete Legal      *
+ * Notice.                                                     *
+ *                                                             *
+ ***************************************************************
+ *                                                             *
+ * THIS ANSYS SOFTWARE PRODUCT AND PROGRAM DOCUMENTATION       *
+ * INCLUDE TRADE SECRETS AND CONFIDENTIAL AND PROPRIETARY      *
+ * PRODUCTS OF ANSYS, INC., ITS SUBSIDIARIES, OR LICENSORS.    *
+ * The software products and documentation are furnished by    *
+ * ANSYS, Inc. or its subsidiaries under a software license    *
+ * agreement that contains provisions concerning               *
+ * non-disclosure, copying, length and nature of use,          *
+ * compliance with exporting laws, warranties, disclaimers,    *
+ * limitations of liability, and remedies, and other           *
+ * provisions.  The software products and documentation may be *
+ * used, disclosed, transferred, or copied only in accordance  *
+ * with the terms and conditions of that software license      *
+ * agreement.                                                  *
+ *                                                             *
+ * ANSYS, Inc. is a UL registered                              *
+ * ISO 9001:2008 company.                                      *
+ *                                                             *
+ ***************************************************************
+ *                                                             *
+ * This product is subject to U.S. laws governing export and   *
+ * re-export.                                                  *
+ *                                                             *
+ * For U.S. Government users, except as specifically granted   *
+ * by the ANSYS, Inc. software license agreement, the use,     *
+ * duplication, or disclosure by the United States Government  *
+ * is subject to restrictions stated in the ANSYS, Inc.        *
+ * software license agreement and FAR 12.212 (for non-DOD      *
+ * licenses).                                                  *
+ *                                                             *
+ ***************************************************************
+
+ Release 18.2
+     
+ Point Releases and Patches installed:   
+     
+ ANSYS, Inc. Products Release 18.2   
+ ANSYS Mechanical Products Release 18.2  
+ ANSYS Customization Files for User Programmable Features Release 18.2   
+ ANSYS Autodyn Release 18.2  
+ ANSYS LS-DYNA Release 18.2  
+ AutoCAD Release 18.2
+ ACIS Release 18.2   
+ Catia, Version 4 Release 18.2   
+ Catia, Version 5 Release 18.2   
+ Catia, Version 6 Release 18.2   
+ Creo Elements/Direct Modeling Release 18.2  
+ Inventor Release 18.2   
+ JTOpen Release 18.2 
+ NX Release 18.2 
+ Parasolid Release 18.2  
+ Creo Parametric Release 18.2
+ Solid Edge Release 18.2 
+ SolidWorks Release 18.2 
+ ANSYS, Inc. License Manager Release 18.2
+
+
+          *****  ANSYS COMMAND LINE ARGUMENTS  *****
+  INITIAL JOBNAME              = inlet_opt                                                                                                                                                                                                                                               
+  BATCH MODE REQUESTED (-b)    = LIST
+  INPUT FILE COPY MODE (-c)    = COPY
+  SHARED MEMORY PARALLEL REQUESTED
+    SINGLE PROCESS WITH   4 THREADS REQUESTED
+    TOTAL OF     4 CORES REQUESTED
+  INITIAL DIRECTORY = C:\Users\HP\source\repos\EvgeniyKishov\inlet_opt_de
+
+ RELEASE= Release 18.2         BUILD= 18.2      UP20170726   VERSION=WINDOWS x64 
+ CURRENT JOBNAME=inlet_opt  12:32:55  OCT 07, 2021 CP=      0.219
+
+     1  !открытие проекта с прочностным расчётом
+     2  resume,static_structural,db 
+     3  !получение напряжений   
+     4  /input,codes\\map\\get_stress.txt   
+     5      
+     6  !очистка проекта
+     7  /clear  
+     8      
+     9  !открытие бинарного файла проекта с жидкой сеткой   
+    10  resume,inlet_opt,db 
+    11      
+    12  !считывание номеров узлов и напряжений во временный одномерный массив   
+    13  *dim,v,array,all_nodes_num*2
+    14  *vread,v(1),seqv,txt
+    15  (2F12.4)
+    16      
+    17  !формирование массива с напряжениями
+    18  *dim,s_eqv,array,all_nodes_num  
+    19  *do,i,1,all_nodes_num   
+    20  	s_eqv(i) = v(2*i)  
+    21  *enddo  
+    22      
+    23  !удаление временного массива
+    24  *del,v,,nopr
+    25      
+    26  !формирование массива, отображающего множество абсолютных номеров узлов 
+    27  !... на их порядковые номера в общем списке (т.е. в массиве all_nodes)  
+    28  *vscfun,map_ids_size,max,all_nodes  
+    29  *dim,map_ids,array,map_ids_size 
+    30  *do,i,1,all_nodes_num   
+    31  	map_ids(all_nodes(i)) = i  
+    32  *enddo  
+    33      
+    34  !выход с сохранением проекта
+    35  /exit,all   
+
+ RUN SETUP PROCEDURE FROM FILE= C:\Program Files\ANSYS Inc\v182\ANSYS\apdl\start.ans
+
+ /INPUT FILE= C:\Program Files\ANSYS Inc\v182\ANSYS\apdl\start.ans  LINE=       0
+
+ RESUME ANSYS DATA FROM FILE NAME=static_structural.db                                                                                                                                                                                                                                                
+
+ *** ANSYS GLOBAL STATUS *** 
+
+ TITLE = real_bracket--Static Structural (A5)                                  
+ ANALYSIS TYPE =  STATIC (STEADY-STATE)
+ NUMBER OF ELEMENT TYPES =      2
+     28231 ELEMENTS CURRENTLY SELECTED.  MAX ELEMENT NUMBER =       28231
+     47315 NODES CURRENTLY SELECTED.     MAX NODE NUMBER =          47315
+         2 COMPONENTS CURRENTLY DEFINED
+ MAXIMUM LINEAR PROPERTY NUMBER        =       1
+ ACTIVE COORDINATE SYSTEM              =       0  (CARTESIAN)  
+ NUMBER OF SPECIFIED CONSTRAINTS       =    1500
+ NUMBER OF SPECIFIED SURFACE LOADS     =      94
+ CURRENT LOAD CASE =      0 OF      0
+ LOAD SET   =       1
+ SUBSTEP    =       1
+ TIME/FREQ  =    1.0000    
+
+ INITIAL JOBNAME = inlet_opt
+ CURRENT JOBNAME = inlet_opt
+
+ /INPUT FILE= codes\\map\\get_stress.txt  LINE=       0
+
+ *** ANSYS - ENGINEERING ANALYSIS SYSTEM  RELEASE Release 18.2     18.2     ***
+ ANSYS Mechanical Enterprise                       
+ 20120530  VERSION=WINDOWS x64   12:32:55  OCT 07, 2021 CP=      0.312
+
+ real_bracket--Static Structural (A5)                                          
+
+
+
+          ***** ANSYS RESULTS INTERPRETATION (POST1) *****
+
+ *** NOTE ***                            CP =       0.312   TIME= 12:32:55
+ Reading results into the database (SET command) will update the current 
+ displacement and force boundary conditions in the database with the     
+ values from the results file for that load set.  Note that any          
+ subsequent solutions will use these values unless action is taken to    
+ either SAVE the current values or not overwrite them (/EXIT,NOSAVE).    
+
+ DATA FILE CHANGED TO FILE= static_structural.rst
+
+ SET PARAMETER DIMENSIONS ON  NODES_NUM
+  TYPE=ARRA  DIMENSIONS=        1        1        1
+
+ VECTOR READ OPERATION  *VREAD  
+  nodes_nu READ FROM FILE all_nodes_num.txt
+ VECTOR LENGTH=      1
+ LOOP DIRECTIONS=IJK   COUNTS=       1       1       1
+ FORMAT=(F12.4)                                                               
+
+ SET PARAMETER DIMENSIONS ON  V
+  TYPE=ARRA  DIMENSIONS=   264304        1        1
+
+ VECTOR READ OPERATION  *VREAD  
+  V        READ FROM FILE all_nodes.txt
+ VECTOR LENGTH= 264304
+ LOOP DIRECTIONS=IJK   COUNTS=  264304       1       1
+ FORMAT=(4F12.4)                                                              
+
+ SET PARAMETER DIMENSIONS ON  NODAL_COORD
+  TYPE=ARRA  DIMENSIONS=    66076        3        1
+
+ SET PARAMETER DIMENSIONS ON  NODAL_IDS
+  TYPE=ARRA  DIMENSIONS=    66076        1        1
+
+ *DO LOOP ON PARAMETER= I FROM  1.0000     TO  66076.     BY  1.0000    
+
+ PARAMETER NODAL_IDS(I) =     1.000000000    
+
+ *DO LOOP ON PARAMETER= J FROM  1.0000     TO  3.0000     BY  1.0000    
+
+ PARAMETER NODAL_COORD(I,J) =     7.776500000    
+
+ *ENDDO  INDEX= J                               
+
+ *ENDDO  INDEX= I                               
+ You have already entered the general postprocessor (POST1).             
+
+
+ USE LAST SUBSTEP ON RESULT FILE  FOR LOAD CASE 0 
+
+ SET COMMAND GOT LOAD STEP=     1  SUBSTEP=     1  CUMULATIVE ITERATION=     1
+   TIME/FREQUENCY=  1.0000    
+ TITLE= real_bracket--Static Structural (A5)                                    
+
+ OUTPUT ELEMENT COORDINATES OF POINTS= intp_par1       
+ INPUT POINT ARRAY                   = nodal_coord     
+ OUTPUT ELEMENTS CONTAINING POINTS   = intp_par2       
+ NUMBER OF POINTS                    =  66076
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 16362.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20.                                                             
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15141.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7972.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1613.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15414.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10953.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15066.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15545.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 8029.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15279.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15472.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15285.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15238.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15298.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3530.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15336.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7616.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15341.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27962.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5342.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27081.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25504.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13739.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25173.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12717.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25784.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24127.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24646.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24836.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12471.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12363.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11736.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23735.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24783.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22716.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23597.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 16286.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 280.                                                            
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14717.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7585.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14918.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7039.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15225.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15342.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7605.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15132.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 18407.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15978.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 17791.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 17323.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 17791.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20191.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21977.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12309.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24496.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28190.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25.                                                             
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27790.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12364.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3642.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22792.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23475.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3642.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 2341.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24442.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23989.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23838.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24248.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5559.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12364.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5078.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25160.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24888.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12840.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 2241.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13465.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13996.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26188.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13778.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13996.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 4423.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10906.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22519.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22156.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21752.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 18921.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 19537.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10670.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20726.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10470.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10621.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22149.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 6512.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10205.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7039.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15545.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 8259.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14756.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 4425.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 8029.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1617.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22979.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13294.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13910.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3985.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12831.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26051.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3689.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 974.                                                            
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25050.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3749.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23917.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24752.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23544.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1473.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23661.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22949.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10608.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1501.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1506.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 9938.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21162.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 18976.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 9621.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 18648.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 17399.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 17675.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15297.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28146.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7424.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14366.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 2859.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24678.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26808.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5330.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23759.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24805.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3817.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20989.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15903.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15735.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7893.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15285.                                                          
+
+ *** WARNING ***                         CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation produced no results for these points.                  
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15125.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24911.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11702.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12230.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12237.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12573.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24260.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25457.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26631.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12764.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3899.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13847.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26735.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 4675.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13847.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 4348.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15229.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14898.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15298.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1494.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 6610.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 16093.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15981.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 16304.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3129.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 17774.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 6627.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 18896.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3399.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1519.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21384.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1494.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 6143.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3674.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23696.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3674.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3823.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26274.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12425.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13035.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12992.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12883.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3997.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15311.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7090.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15125.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7090.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7762.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22332.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11120.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3530.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26834.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27432.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27227.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27448.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25838.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27075.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25838.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25518.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25028.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23734.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24569.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3784.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24921.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24569.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24254.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22875.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23172.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5896.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5895.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22875.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22270.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22964.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 2409.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14282.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15230.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15336.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 2719.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7654.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14806.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10788.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 16925.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15845.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15790.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 242.                                                            
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27909.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27816.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11275.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14121.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28033.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11180.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14294.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21991.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5124.                                                           
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27205.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27835.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13284.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26805.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28006.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27835.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26580.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13705.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26481.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26594.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13460.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21308.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10454.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20063.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10350.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23683.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22188.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22243.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21613.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22610.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22602.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22243.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11510.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10773.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21661.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21331.                                                          
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 192.                                                            
+
+ *** NOTE ***                            CP =       3.375   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10710.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10707.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21931.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 6427.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28020.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13599.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14136.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14183.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13571.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27597.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13755.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26235.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14136.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27498.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13599.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27602.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26235.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26084.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26844.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27374.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13977.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27854.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27762.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13371.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27233.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14087.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24327.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24722.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25661.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21923.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 19187.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1544.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 17887.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 9222.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14756.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7915.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 18632.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22671.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23967.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13265.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25250.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7291.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14301.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15098.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14309.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7267.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 4380.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14419.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7435.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14721.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14356.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7529.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7376.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15431.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14302.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14356.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15098.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7425.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7491.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 16752.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14581.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 4367.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7401.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7509.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7489.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7507.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14645.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14496.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14521.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14836.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7465.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14380.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7507.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14327.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7453.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7541.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7443.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7417.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7952.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7464.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7375.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14380.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28056.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 4860.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13529.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14099.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13674.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27267.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14185.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13620.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20957.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20360.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 19710.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20360.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10371.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10174.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10371.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22155.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21626.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3418.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21299.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11389.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21902.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21210.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22609.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11374.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11433.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11452.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28091.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1764.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28037.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28105.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27415.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13913.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27495.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27365.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 1764.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27365.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27527.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27834.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28072.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27833.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27834.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14078.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14202.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5039.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26744.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10904.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12501.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13057.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25507.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21598.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25934.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23638.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12829.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23639.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11902.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12533.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24505.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24788.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24345.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12342.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25315.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13057.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12977.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25864.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26168.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12901.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25507.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25843.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26280.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13466.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13088.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13091.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 994.                                                            
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25774.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25935.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25936.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11705.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12827.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12819.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23790.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23639.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23925.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24987.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24508.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12525.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12344.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 25941.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13031.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24408.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23546.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21878.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23490.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11561.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22698.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21366.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20988.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22327.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11069.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21846.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21696.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21567.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20674.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 24176.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 12153.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23490.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23272.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21592.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23180.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11561.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23145.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21475.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21577.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23144.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21239.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21110.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 21260.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22613.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 10579.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22327.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20579.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20010.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 19052.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 18555.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 18971.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20241.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20674.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27785.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23418.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23694.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3145.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22986.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15421.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15003.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 22006.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13400.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5628.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13961.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 14298.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 17067.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 20562.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 9106.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 23576.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 16931.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 11667.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 7319.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 40.                                                             
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26086.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 3481.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 28187.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 5189.                                                           
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 26808.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 13999.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 15592.                                                          
+
+ *** NOTE ***                            CP =       3.438   TIME= 12:32:57
+ Some interpolation points do not lie on the selected elements.  The     
+ *MOPER operation for these points is based on extrapolation from        
+ element 27652.                                                          
+
+ INTERPOLATED RESULT VECTOR          = s_eqv           
+ INPUT ELEMENT COORDINATES OF POINTS = intp_par1       
+ INPUT ELEMENTS CONTAINING POINTS    = intp_par2       
+ RESULT LABEL                        = S   
+ RESULT COMPONENT                    = EQV     
+ NUMBER OF POINTS                    =  66076
+
+ *** WARNING ***                         CP =       4.359   TIME= 12:32:58
+ The selected element set contains stiffness types (such as SURF154 )    
+  which are not valid for error estimation.                              
+
+ OPENED FILE= seqv.txt FOR COMMAND FILE DATA 
+
+
+  COMMAND FILE CLOSED 
+
+
+ EXIT THE ANSYS POST1 DATABASE PROCESSOR
+
+
+ ***** ROUTINE COMPLETED *****  CP =         6.094
+
+
+
+ CLEAR DATABASE AND RERUN START.ANS
+
+ RUN SETUP PROCEDURE FROM FILE= C:\Program Files\ANSYS Inc\v182\ANSYS\apdl\start.ans
+
+ ANSYS Mechanical Enterprise                       
+
+ /INPUT FILE= C:\Program Files\ANSYS Inc\v182\ANSYS\apdl\start.ans  LINE=       0
+
+
+ ***** ROUTINE COMPLETED *****  CP =         6.125
+
+
+
+ RESUME ANSYS DATA FROM FILE NAME=inlet_opt.db                                                                                                                                                                                                                                                        
+
+ *** ANSYS GLOBAL STATUS *** 
+
+ TITLE =                                                                       
+ NUMBER OF ELEMENT TYPES =      2
+    382918 ELEMENTS CURRENTLY SELECTED.  MAX ELEMENT NUMBER =      407052
+     66076 NODES CURRENTLY SELECTED.     MAX NODE NUMBER =         138117
+         3 COMPONENTS CURRENTLY DEFINED
+ MAXIMUM LINEAR PROPERTY NUMBER        =       1
+ ACTIVE COORDINATE SYSTEM              =       0  (CARTESIAN)  
+
+ INITIAL JOBNAME = inlet_opt
+ CURRENT JOBNAME = inlet_opt
+
+ SET PARAMETER DIMENSIONS ON  V
+  TYPE=ARRA  DIMENSIONS=   132152        1        1
+
+ VECTOR READ OPERATION  *VREAD  
+  V        READ FROM FILE seqv.txt
+ VECTOR LENGTH= 132152
+ LOOP DIRECTIONS=IJK   COUNTS=  132152       1       1
+ FORMAT=(2F12.4)                                                              
+
+ SET PARAMETER DIMENSIONS ON  S_EQV TYPE=ARRA  DIMENSIONS= 66076     1     1
+
+ *DO LOOP ON PARAMETER= I FROM  1.0000     TO  66076.     BY  1.0000    
+
+ PARAMETER S_EQV(I) =     30.65560000    
+
+ *ENDDO  INDEX= I                               
+
+ VECTOR PARAMETER OPERATION *VSCFUN 
+  MAP_IDS_SIZE = MAX  all_nodes       
+ VECTOR LENGTH=   66076
+ RESULT= 0.13812E+06
+
+ SET PARAMETER DIMENSIONS ON  MAP_IDS
+  TYPE=ARRA  DIMENSIONS=   138117        1        1
+
+ *DO LOOP ON PARAMETER= I FROM  1.0000     TO  66076.     BY  1.0000    
+
+ PARAMETER MAP_IDS(ALL_NODES(I)) =     1.000000000    
+
+ *ENDDO  INDEX= I                               
+
+ SAVE ALL MODEL, SOLUTION AND POST DATA
+
+ ALL CURRENT ANSYS DATA WRITTEN TO FILE NAME= inlet_opt.db
+  FOR POSSIBLE RESUME FROM THIS POINT
+
+
+ NUMBER OF WARNING MESSAGES ENCOUNTERED=          2
+ NUMBER OF ERROR   MESSAGES ENCOUNTERED=          0
+
++--------------------- A N S Y S   S T A T I S T I C S ------------------------+
+
+Release: Release 18.2       Build: 18.2       Update: UP20170726   Platform: WINDOWS x64 
+Date Run: 10/07/2021   Time: 12:33     Process ID: 8592
+Operating System: Windows 10  (Build: 19042)
+
+Processor Model: Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz
+
+Compiler: Intel(R) FORTRAN Compiler Version 15.0.7  (Build: 20160518)
+          Intel(R) C/C++ Compiler Version 15.0.7  (Build: 20160518)
+          Intel(R) Math Kernel Library Version 2017.0.2 Product Build 20170126
+
+Number of machines requested            :    1
+Total number of cores available         :   12
+Number of physical cores available      :    6
+Number of processes requested           :    1
+Number of threads per process requested :    4
+Total number of cores requested         :    4 (Shared Memory Parallel)                    
+
+GPU Acceleration: Not Requested
+
+Job Name: inlet_opt
+Working Directory: C:\Program Files\ANSYS Inc\v182\ansys\bin\winx64
+
+Total CPU time for main thread                    :        4.7 seconds
+Total CPU time summed for all threads             :        8.5 seconds
+
+Elapsed time spent pre-processing model (/PREP7)  :        0.0 seconds
+Elapsed time spent solution - preprocessing       :        0.0 seconds
+Elapsed time spent computing solution             :        0.0 seconds
+Elapsed time spent solution - postprocessing      :        0.0 seconds
+Elapsed time spent post-processing model (/POST1) :        3.5 seconds
+ 
+
+Maximum total memory used                         :      225.0 MB
+Maximum total memory allocated                    :     2112.0 MB
+Total physical memory available                   :         32 GB
+
++------------------ E N D   A N S Y S   S T A T I S T I C S -------------------+
+
+
+ *---------------------------------------------------------------------------*
+ |                                                                           |
+ |                            ANSYS RUN COMPLETED                            |
+ |                                                                           |
+ |---------------------------------------------------------------------------|
+ |                                                                           |
+ | Ansys Release 18.2          Build 18.2         UP20170726     WINDOWS x64 |
+ |                                                                           |
+ |---------------------------------------------------------------------------|
+ |                                                                           |
+ | Database Requested(-db)  1024 MB    Scratch Memory Requested      1024 MB |
+ | Maximum Database Used     211 MB    Maximum Scratch Memory Used     14 MB |
+ |                                                                           |
+ |---------------------------------------------------------------------------|
+ |                                                                           |
+ |        CP Time      (sec) =          8.484       Time  =  12:33:00        |
+ |        Elapsed Time (sec) =         21.000       Date  =  10/07/2021      |
+ |                                                                           |
+ *---------------------------------------------------------------------------*

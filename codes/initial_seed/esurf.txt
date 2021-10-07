@@ -1,0 +1,7 @@
+allsel,all,all
+
+/prep7
+et,2,mesh200
+keyopt,2,1,6
+type,2
+esurf

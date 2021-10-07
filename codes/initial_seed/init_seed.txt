@@ -1,0 +1,48 @@
+!@inlet_nodes_num: количество узлов для впрыска
+inlet_nodes_num = arg1
+
+/prep7
+
+!учёт технологических ограничений
+*if,manufc,eq,1,then
+	*use,codes\\initial_seed\\form_ext_nodes.txt
+*else
+	!выбор узлов на внешней поверхности 
+	nsel,s,ext
+	!создание компонента с поверхностными узлами
+	cm,ext_nodes,node
+	cmsel,s,ext_nodes
+	!ext_nodes: массив номеров узлов на поверхности
+	*vget,ext_nodes,node,,nlist
+	*get,ext_nodes_num,parm,ext_nodes,dim,1
+*endif
+
+!inlet_nodes: массив узлов для впрыска
+!заполняется на основе типа засева (детерминированный/рандомный)
+*dim,inlet_nodes,array,inlet_nodes_num
+*if,seed_mode,eq,0,then
+	*use,codes\\initial_seed\\form_inlet_nodes.txt
+*else
+	*use,codes\\initial_seed\\random_inlet_nodes.txt
+*endif
+
+!покрываем солид сеткой поверхностных элементов (MESH200)
+*use,codes\\initial_seed\\esurf.txt
+
+*dim,node_nx,array,inlet_nodes_num
+*dim,node_ny,array,inlet_nodes_num
+*dim,node_nz,array,inlet_nodes_num
+
+!вычисление нормалей
+*use,codes\\initial_seed\\get_nodal_normal.txt
+
+allsel,all,all
+
+!запись файла с номерами найденных узлов и нормалями в них
+seed_id = 1
+*use,codes\\initial_seed\\write_inlet_nodes.txt
+
+
+
+
+

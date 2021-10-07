@@ -1,0 +1,37 @@
+/post1
+file,static_structural,rst
+
+!считывание количества узлов в сетке-приёмнике
+*dim,nodes_num,array,1
+*vread,nodes_num(1),all_nodes_num,txt
+(F12.4)
+
+!считывание координат узлов сетки-приёмника в одномерный массив
+*dim,v,array,nodes_num(1)*4
+*vread,v(1),all_nodes,txt
+(4F12.4)
+
+!конвертация одномерного массива в двумерный
+!...и считываение номеров узлов
+*dim,nodal_coord,array,nodes_num(1),3
+*dim,nodal_ids,array,nodes_num(1)
+*do,i,1,nodes_num(1)
+	nodal_ids(i) = v(4*(i-1)+1)
+	*do,j,1,3
+		nodal_coord(i,j) = v(4*(i-1)+j+1)
+	*enddo
+*enddo
+
+/post1
+set,last
+
+!первая фаза интерполяции напряжений
+*moper,intp_par1,nodal_coord,intp,intp_par2
+
+!вторая фаза интерполяции напряжений
+*moper,s_eqv,intp_par1,sget,intp_par2,s,eqv
+
+*cfopen,seqv,txt
+*vwrite,nodal_ids(1),s_eqv(1)
+(F12.4,F12.4)
+*cfclos

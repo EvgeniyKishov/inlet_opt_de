@@ -1,0 +1,42 @@
+!
+!ВЫЧИСЛЕНИЕ НОРМАЛЕЙ К УЗЛАМ
+!длина векторов нормалей = 1
+!нормали записываются в массивы node_nx, node_ny, node_nz
+!
+esel,s,enam,,200
+*do,i,1,inlet_nodes_num
+	node_nx(i) = 0.0
+	node_ny(i) = 0.0
+	node_nz(i) = 0.0
+	
+	adj_el_num = 0
+	exit_flag = 1
+	*dowhile,exit_flag
+		eid = enextn(inlet_nodes(i), adj_el_num+1)
+		*if,eid,ne,0,then
+			eln1 = nelem(eid, 1)
+			eln2 = nelem(eid, 2)
+			eln3 = nelem(eid, 3)
+			
+			node_nx(i) = node_nx(i) + normnx(eln1, eln2, eln3)
+			node_ny(i) = node_ny(i) + normny(eln1, eln2, eln3)
+			node_nz(i) = node_nz(i) + normnz(eln1, eln2, eln3)
+			
+			adj_el_num = adj_el_num + 1
+		*else
+			exit_flag = -1
+		*endif
+	*enddo
+	
+	!определение среднего значения нормали 
+	node_nx(i) = node_nx(i) / adj_el_num
+	node_ny(i) = node_ny(i) / adj_el_num
+	node_nz(i) = node_nz(i) / adj_el_num
+	
+	n_abs = sqrt(node_nx(i)**2 + node_ny(i)**2 + node_nz(i)**2)
+	node_nx(i) = node_nx(i) / n_abs
+	node_ny(i) = node_ny(i) / n_abs
+	node_nz(i) = node_nz(i) / n_abs	
+*enddo
+allsel,all,all
+

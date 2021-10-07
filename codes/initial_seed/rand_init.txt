@@ -1,0 +1,8 @@
+!код взят с сайта xansys.org
+
+*get,t,active,0,time,wall
+t=t*3600
+*dim,dummy,array,t
+*vfill,dummy(1),rand
+*del,t
+*del,dummy

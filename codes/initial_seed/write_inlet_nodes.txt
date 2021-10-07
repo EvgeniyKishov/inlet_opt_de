@@ -1,0 +1,9 @@
+*cfopen,seed%seed_id%,txt
+*vwrite
+node_id    nx       ny      nz 
+*vwrite
+-------------------------------------------  
+*vwrite,inlet_nodes(1),node_nx(1),node_ny(1),node_nz(1)
+(F8.0,F8.4,F8.4,F8.4)
+*cfclos
+seed_id = seed_id + 1
