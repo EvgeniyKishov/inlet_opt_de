@@ -1,0 +1,40 @@
+!инициализация рандомайзера
+*use,codes\\initial_seed\\rand_init.txt
+
+!открытие бинарного файла проекта
+resume,inlet_opt,db
+
+!инициализация массива мутировавшими точками входа
+*del,inlet_nodes_v,,nopr
+*dim,inlet_nodes_v,array,n_
+
+*del,inlet_nodes_x,,nopr
+*dim,inlet_nodes_x,array,n_
+*do,i,1,n_
+	inlet_nodes_x(i) = inlet_nodes(i)
+*enddo
+
+!мутация
+*use,codes\\seed_pre\\mut.txt
+
+!инициализация массива со скрещенными точками входа
+*del,inlet_nodes_u,,nopr
+*dim,inlet_nodes_u,array,n_
+
+!скрещивание
+*use,codes\\seed_pre\\cross.txt
+
+!получение нормалей x-точек (текущих)
+*use,codes\\initial_seed\\get_nodal_normal.txt,'inlet_nodes_x'
+
+!запись x-точек (текущих)
+*use,codes\\initial_seed\\write_inlet_nodes.txt,'seed_x_%seed_id%','inlet_nodes_x'
+
+!получение нормалей u-точек
+*use,codes\\initial_seed\\get_nodal_normal.txt,'inlet_nodes_u'
+
+!запись u-точек
+*use,codes\\initial_seed\\write_inlet_nodes.txt,'seed_u_%seed_id%','inlet_nodes_u'
+
+!выход с сохранением проекта
+/exit,all

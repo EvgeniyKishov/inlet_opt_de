@@ -1,0 +1,41 @@
+*dim,list,array,n_
+*do,i,1,n_
+	list(i) = i
+*enddo
+
+r1 = nint(rand(1, n_))
+*dim,shrinked_list,array,n_-1
+j = 1
+*do,i,1,n_
+	*if,list(i),ne,r1,then
+		shrinked_list(j) = list(i)
+		j = j + 1
+	*endif
+*enddo
+
+tmp = nint(rand(1, n_-1))
+r2 = shrinked_list(tmp)
+
+*del,list,,nopr
+*dim,list,array,n_-1
+*do,i,1,n_-1
+	list(i) = shrinked_list(i)
+*enddo
+*del,shrinked_list,,nopr
+*dim,shrinked_list,array,n_-2
+j = 1
+*do,i,1,n_-1
+	*if,list(i),ne,r2,then
+		shrinked_list(j) = list(i)
+		j = j + 1
+	*endif	
+*enddo
+
+tmp = nint(rand(1, n_-2))
+r3 = shrinked_list(tmp)
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*del,j
+*del,tmp
+*del,list,,nopr
+*del,shrinked_list,,nopr

@@ -1,0 +1,29 @@
+!запись в файл значений целевых функций для каждого узла
+*cfopen,goalf%seed_id+1%,txt
+*vwrite
+node_id         criteria
+*vwrite
+-----------------------
+obj_min = 1e30
+id_min = 1
+*do,i,1,inlet_nodes_num	
+	id = inlet_quality(i,1)
+	q = inlet_quality(i,2)
+	*if,q,le,obj_min,then
+		obj_min = q
+		id_min = id
+	*endif
+	*vwrite,id,q
+        (F12.4,F12.4)
+*enddo
+*vwrite
+-----------------------
+*vwrite,obj_min,id_min
+Min. objective = %g at node number = %d
+*cfclos
+
+*del,id
+*del,q
+*del,i
+*del,obj_min
+*del,id_min

@@ -1,0 +1,33 @@
+*dim,inlet_quality_x,array,n_,2
+to_skip = 2
+*vread,inlet_quality_x(1,1),goalf_x_%seed_id%,txt,,JIK,2,n_,,to_skip
+(F12.4,F12.4)
+
+*dim,inlet_quality_u,array,n_,2
+to_skip = 2
+*vread,inlet_quality_u(1,1),goalf_u_%seed_id%,txt,,JIK,2,n_,,to_skip
+(F12.4,F12.4)
+
+*dim,inlet_quality,array,n_,2
+
+*do,i,1,n_
+	*if,inlet_quality_x(i,2),le,inlet_quality_u(i,2),then
+		inlet_nodes(i) = inlet_quality_x(i,1)
+		inlet_quality(i,1) = inlet_nodes(i)
+		inlet_quality(i,2) = inlet_quality_x(i,2)
+	*else
+		inlet_nodes(i) = inlet_quality_u(i,1)
+		inlet_quality(i,1) = inlet_nodes(i)
+		inlet_quality(i,2) = inlet_quality_u(i,2)
+	*endif
+*enddo
+
+!запись нового засева
+*use,codes\\initial_seed\\write_inlet_nodes.txt,'seed%seed_id+1%','inlet_nodes'
+
+!запись результирующего значения целевой функции
+*use,codes\\seed_post\\write_goalf.txt
+
+*del,inlet_quality_x,,nopr
+*del,inlet_quality_u,,nopr
+*del,to_skip

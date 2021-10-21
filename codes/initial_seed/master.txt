@@ -43,6 +43,8 @@ teta = 0.5
 ! КОНЕЦ ВХОДНЫХ ДАННЫХ
 !!
 
+seed_id = 1
+
 !начальный "засев"
 *use,codes\\initial_seed\\init_seed.txt,n_
 

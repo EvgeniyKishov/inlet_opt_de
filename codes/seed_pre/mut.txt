@@ -1,0 +1,34 @@
+cmsel,s,ext_nodes
+*do,ii,1,n_
+	!вычисление случайных индексов r1, r2, r3
+	*do,j,1,3
+		r%j% = 0
+	*enddo
+	*use,codes\\seed_pre\\compute_rand_ids.txt
+
+	!получение координат случайных узлов
+	*do,j,1,3
+		x_r%j% = nx(inlet_nodes(r%j%))
+		y_r%j% = ny(inlet_nodes(r%j%))
+		z_r%j% = nz(inlet_nodes(r%j%))
+	*enddo
+	
+	!мутация точки согласно алгоритму DE
+	vx = x_r1 + F*(x_r2 - x_r3)
+	vy = y_r1 + F*(y_r2 - y_r3)
+	vz = z_r1 + F*(z_r2 - z_r3)
+	
+	!поиск номера узла, ближайшего к мутировавшей точке
+	inlet_nodes_v(ii) = node(vx, vy, vz)
+*enddo
+allsel,all,all
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*do,j,1,3
+	*del,r%j% 
+	*del,x_r%j%
+	*del,y_r%j%
+	*del,z_r%j%
+*enddo
+*del,vx
+*del,vy
+*del,vz

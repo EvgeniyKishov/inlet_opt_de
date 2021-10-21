@@ -34,13 +34,16 @@ inlet_nodes_num = arg1
 *dim,node_nz,array,inlet_nodes_num
 
 !вычисление нормалей
-*use,codes\\initial_seed\\get_nodal_normal.txt
+!
+!*use,codes\\initial_seed\\get_nodal_normal.txt,'inlet_nodes'
+!
 
 allsel,all,all
 
 !запись файла с номерами найденных узлов и нормалями в них
-seed_id = 1
-*use,codes\\initial_seed\\write_inlet_nodes.txt
+!
+!*use,codes\\initial_seed\\write_inlet_nodes.txt,'inlet_nodes',seed_x%seed_id%
+!
 
 
 

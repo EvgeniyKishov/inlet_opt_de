@@ -1,0 +1,16 @@
+!открытие бинарного файла проекта
+resume,inlet_opt,db
+
+!запись целевой функции для x-точек (исходных)
+*use,codes\\seed_post\\goalf.txt,'x','goalf_x_%seed_id%','nosort'
+
+!запись целевой функции для u-точек (мутировавших)
+*use,codes\\seed_post\\goalf.txt,'u','goalf_u_%seed_id%','nosort'
+
+!формирование новой популяции
+*use,codes\\seed_post\\updpop.txt
+
+seed_id = seed_id + 1
+
+!выход с сохранением проекта
+/exit,all

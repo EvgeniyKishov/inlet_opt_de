@@ -1,3 +1,5 @@
+arrname = arg1
+
 !
 !ВЫЧИСЛЕНИЕ НОРМАЛЕЙ К УЗЛАМ
 !длина векторов нормалей = 1
@@ -12,7 +14,7 @@ esel,s,enam,,200
 	adj_el_num = 0
 	exit_flag = 1
 	*dowhile,exit_flag
-		eid = enextn(inlet_nodes(i), adj_el_num+1)
+		eid = enextn(%arrname%(i), adj_el_num+1)
 		*if,eid,ne,0,then
 			eln1 = nelem(eid, 1)
 			eln2 = nelem(eid, 2)
@@ -40,3 +42,11 @@ esel,s,enam,,200
 *enddo
 allsel,all,all
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*del,adj_el_num
+*del,exit_flag
+*del,eid
+*del,eln1
+*del,eln2
+*del,eln3
+*del,n_abs

@@ -1,0 +1,82 @@
+prefix = arg1
+fname = arg2
+sort_flag = arg3
+
+prefix = strcat(prefix, '_')
+
+!считываение файлов с результатами проливки
+!число файлов = числу точек входа inlet_nodes_num
+*do,i,1,inlet_nodes_num
+	!считывание количества узлов на линии спая
+	*dim,spay_nodes_num%i%,array,1
+	name = strcat('spnnum_file_', prefix)
+	name = strcat(name, chrval(i))
+	*vread,spay_nodes_num%i%(1),name,txt
+        (F12.4)
+	
+	!считывание узлов на линии спая
+	!первый элемент массива - это номер узла для впрыска
+	!остальные элементы - узлы на линии спая
+	*dim,spay_nodes%i%,array,spay_nodes_num%i%(1)+1
+	name = strcat('spay_nodes_file_', prefix)
+	name = strcat(name, chrval(i))
+	*vread,spay_nodes%i%(1),name,txt
+        (F12.4)
+*enddo
+
+!inlet_quality - матрица, два стоблца
+!1-й столбец - номера точек входа
+!2-й столбец - максимальные напряжения на линии спая для данной точки входа
+*dim,inlet_quality,array,inlet_nodes_num,2
+*do,i,1,inlet_nodes_num	
+	stress_max = 0.0
+	stress_avg = 0.0
+	inlet_quality(i,1) = spay_nodes%i%(1)
+	*do,j,2,spay_nodes_num%i%(1)+1
+		id = map_ids(spay_nodes%i%(j))
+		*if,s_eqv(id),ge,stress_max,then
+			stress_max = s_eqv(id)
+		*endif
+		stress_avg = stress_avg + s_eqv(id)
+	*enddo
+	stress_avg = stress_avg / spay_nodes_num%i%(1)
+	
+	inlet_quality(i,2) = (1-teta)*stress_max + teta*stress_avg
+*enddo
+
+!сортировка таблицы по возрастанию напряжений
+*if,sort_flag,eq,'sort',then
+	*del,perm,,nopr
+	*moper,perm,inlet_quality,sort,,2
+	*del,perm,,nopr
+*endif
+
+!запись в файл значений целевых функций для каждого узла
+*cfopen,fname,txt
+*vwrite
+node_id         criteria
+*vwrite
+-----------------------
+*do,i,1,inlet_nodes_num	
+	id = inlet_quality(i,1)
+	q = inlet_quality(i,2)
+	*vwrite,id,q
+        (F12.4,F12.4)
+*enddo
+*cfclos
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*del,inlet_quality,,nopr
+*del,id
+*del,q
+*del,stress_max
+*del,stress_avg
+*del,name
+*del,fname
+*del,prefix
+*do,i,1,inlet_nodes_num
+	*del,spay_nodes_num%i%,,nopr
+	*del,spay_nodes%i%,,nopr
+*enddo
+*del,i
+*del,j

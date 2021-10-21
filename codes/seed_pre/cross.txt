@@ -1,0 +1,42 @@
+cmsel,s,ext_nodes
+*do,i,1,n_
+	nrnd = nint(rand(1, 3))
+	ux = nx(inlet_nodes(i)) 
+	uy = ny(inlet_nodes(i))  
+	uz = nz(inlet_nodes(i)) 
+	*if,nrnd,eq,1,then
+		*if,rand(0,1),le,cr,then
+			ux = nx(inlet_nodes_v(i))
+		*endif
+		*if,rand(0,1),le,cr,then
+			uy = ny(inlet_nodes_v(i))
+		*endif
+		*if,rand(0,1),le,cr,then
+			uz = nz(inlet_nodes_v(i))
+		*endif
+	*endif
+
+	*if,nrnd,eq,2,then
+		*if,rand(0,1),le,cr,then
+			uy = ny(inlet_nodes_v(i))
+		*endif
+		*if,rand(0,1),le,cr,then
+			uz = nz(inlet_nodes_v(i))
+		*endif
+	*endif
+
+	*if,nrnd,eq,3,then
+		*if,rand(0,1),le,cr,then
+			uz = nz(inlet_nodes_v(i))
+		*endif
+	*endif
+	
+	inlet_nodes_u(i) = node(ux, uy, uz)
+*enddo
+allsel,all,all
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*del,ux
+*del,uy
+*del,uz
+*del,nrnd
